@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roblox Username Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Roblox Username Finder</h1>
+  <input type="number" id="userId" placeholder="Enter User ID" />
+  <button onclick="findUsername()">Find Username</button>
+  <div id="result"></div>
+
+  <script>
+    async function findUsername() {
+      const userId = document.getElementById('userId').value;
+      const resultDiv = document.getElementById('result');
+
+      if (!userId) {
+        resultDiv.textContent = "Please enter a valid User ID.";
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://users.roblox.com/v1/users/${userId}`);
+        if (!response.ok) {
+          throw new Error("User not found");
+        }
+        const data = await response.json();
+        resultDiv.textContent = `Username: ${data.name}`;
+      } catch (error) {
+        resultDiv.textContent = "Error: Could not fetch username.";
+      }
+    }
+  </script>
+</body>
+</html>
